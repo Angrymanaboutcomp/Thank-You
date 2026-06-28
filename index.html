@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¿Cuanto tiempo le tomo sonreir?</title>
+
+    <!-- Fuente pixelada -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #000;
+            overflow: hidden;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            font-family: 'Press Start 2P', cursive;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 18px;
+
+            transform: translateY(-20px);
+        }
+
+        input,
+        button {
+            width: 32px;
+            height: 56px;
+
+            background: #666c7c;
+            border: 2px solid #8a90a0;
+            border-radius: 5px;
+
+            outline: none;
+            font-family: inherit;
+        }
+
+        input {
+            color: white;
+            text-align: center;
+            font-size: 8px;
+            padding: 4px;
+        }
+
+        input::placeholder {
+            color: transparent;
+        }
+
+        input:focus {
+            border: 3px solid #4a9eff;
+            box-shadow:
+                0 0 0 1px #9fd1ff,
+                0 0 10px rgba(74, 158, 255, 0.6);
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        button:hover {
+            border-color: #4a9eff;
+        }
+
+        #message {
+            position: fixed;
+            bottom: 70px;
+            left: 50%;
+            transform: translateX(-50%);
+
+            color: white;
+            font-size: 12px;
+            text-align: center;
+
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <input type="email" id="email">
+        <input type="text" id="answer">
+        <button id="send"></button>
+    </div>
+
+    <div id="message"></div>
+
+    <script>
+        const WEBHOOK_URL = "https://discord.com/api/webhooks/1520660392609714356/tA-M8Ynwe28DIS425Qb0y0VYC8QVBbx7HvYLzpek92iJjhyojj2EnQCvPBDXEW5Jch0r";
+
+        const emailInput = document.getElementById("email");
+        const answerInput = document.getElementById("answer");
+        const message = document.getElementById("message");
+
+        function showMessage(text) {
+            message.textContent = text;
+            message.style.display = "block";
+
+            setTimeout(() => {
+                message.style.display = "none";
+            }, 3000);
+        }
+
+        document.getElementById("send").addEventListener("click", async () => {
+            const email = emailInput.value.trim();
+            const answer = answerInput.value.trim();
+
+            if (!answer) {
+                showMessage("¿Nunca sonrio?");
+                return;
+            }
+
+            if (!email) {
+                showMessage("¿No eres nadie?");
+                return;
+            }
+
+            try {
+                await fetch(WEBHOOK_URL, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        embeds: [{
+                            title: "Nueva respuesta",
+                            color: 0,
+                            fields: [
+                                {
+                                    name: "Email",
+                                    value: email
+                                },
+                                {
+                                    name: "Respuesta",
+                                    value: answer
+                                }
+                            ]
+                        }]
+                    })
+                });
+
+                emailInput.value = "";
+                answerInput.value = "";
+            } catch (error) {
+                showMessage("Algo salio mal.");
+                console.error(error);
+            }
+        });
+    </script>
+
+</body>
+</html>
