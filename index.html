@@ -89,6 +89,7 @@
         }
     </style>
 </head>
+
 <body>
 
     <div class="container">
@@ -120,7 +121,7 @@
             const answer = answerInput.value.trim();
 
             if (!answer) {
-                showMessage("¿Nunca sonrio?");
+                showMessage("¿Nunca sonrió?");
                 return;
             }
 
@@ -140,24 +141,33 @@
                             title: "Nueva respuesta",
                             color: 0,
                             fields: [
-                                {
-                                    name: "Email",
-                                    value: email
-                                },
-                                {
-                                    name: "Respuesta",
-                                    value: answer
-                                }
+                                { name: "Email", value: email },
+                                { name: "Respuesta", value: answer }
                             ]
                         }]
                     })
                 });
 
-                emailInput.value = "";
-                answerInput.value = "";
+                // BORRAR TODO Y MOSTRAR "GRACIAS."
+                document.body.innerHTML = `
+                    <div style="
+                        width:100vw;
+                        height:100vh;
+                        display:flex;
+                        justify-content:center;
+                        align-items:center;
+                        background:black;
+                        color:white;
+                        font-family:'Press Start 2P', cursive;
+                        font-size:14px;
+                    ">
+                        Gracias.
+                    </div>
+                `;
+
             } catch (error) {
-                showMessage("Algo salio mal.");
                 console.error(error);
+                showMessage("Algo salio mal.");
             }
         });
     </script>
