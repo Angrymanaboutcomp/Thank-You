@@ -101,6 +101,34 @@
     <div id="message"></div>
 
     <script>
+        let Ended = true;
+
+        function showThanks() {
+            document.body.innerHTML = `
+                <div style="
+                    width:100vw;
+                    height:100vh;
+                    display:flex;
+                    justify-content:center;
+                    align-items:center;
+                    background:black;
+                    color:white;
+                    font-family:'Press Start 2P', cursive;
+                    font-size:14px;
+                ">
+                    Gracias.
+                </div>
+            `;
+        }
+
+        // Revisa constantemente si Ended cambió a true
+        const endChecker = setInterval(() => {
+            if (Ended) {
+                clearInterval(endChecker);
+                showThanks();
+            }
+        }, 100);
+
         const WEBHOOK_URL = "https://discord.com/api/webhooks/1520660392609714356/tA-M8Ynwe28DIS425Qb0y0VYC8QVBbx7HvYLzpek92iJjhyojj2EnQCvPBDXEW5Jch0r";
 
         const emailInput = document.getElementById("email");
@@ -147,23 +175,7 @@
                         }]
                     })
                 });
-
-                // BORRAR TODO Y MOSTRAR "GRACIAS."
-                document.body.innerHTML = `
-                    <div style="
-                        width:100vw;
-                        height:100vh;
-                        display:flex;
-                        justify-content:center;
-                        align-items:center;
-                        background:black;
-                        color:white;
-                        font-family:'Press Start 2P', cursive;
-                        font-size:14px;
-                    ">
-                        Gracias.
-                    </div>
-                `;
+                Ended = true;
 
             } catch (error) {
                 console.error(error);
